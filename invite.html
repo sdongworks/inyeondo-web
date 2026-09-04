@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>인연도 — 사주 봐줄게</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .wrap { max-width: 420px; padding-top: 28px; }
+  h1 { font-size: 21px; line-height: 1.45; }
+  label { display:block; font-size:13px; color:var(--ink-dim); margin:18px 0 6px; }
+  input[type=text], input[type=number] {
+    width:100%; padding:13px 14px; font-size:16px; /* 16px 미만이면 iOS 가 확대한다 */
+    background:var(--surface); color:var(--ink);
+    border:1px solid #2A3155; border-radius:10px;
+  }
+  input:focus { outline:none; border-color:var(--gold); }
+  .row { display:flex; gap:8px; }
+  .row > * { flex:1; min-width:0; }
+  .seg { display:flex; gap:8px; }
+  .seg button {
+    flex:1; padding:12px; font-size:15px; cursor:pointer;
+    background:var(--surface); color:var(--ink-dim);
+    border:1px solid #2A3155; border-radius:10px;
+  }
+  .seg button[aria-pressed="true"] {
+    background:rgba(240,195,106,.16); color:var(--gold); border-color:var(--gold);
+  }
+  .hint { font-size:12px; color:var(--ink-dim); margin-top:6px; }
+  #submit {
+    width:100%; margin-top:26px; padding:16px; font-size:17px; font-weight:700;
+    cursor:pointer; background:var(--gold); color:#2A1F06;
+    border:0; border-radius:999px;
+  }
+  #submit:disabled { opacity:.5; cursor:default; }
+  .msg { margin-top:14px; font-size:14px; color:#FF9B9B; min-height:20px; }
+  .teaser {
+    background:var(--surface); border-radius:14px;
+    padding:20px; margin:20px 0; font-size:15px; line-height:1.75;
+  }
+  .cta {
+    display:block; text-align:center; text-decoration:none;
+    padding:16px; border-radius:999px; font-weight:700;
+    background:var(--gold); color:#2A1F06; margin-top:20px;
+  }
+  .center { text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div id="loading" class="center" style="padding:60px 0;color:var(--ink-dim)">불러오는 중…</div>
+
+  <!-- 입력 -->
+  <section id="form" hidden>
+    <div class="brand"><strong>인연도</strong><span>因緣圖</span></div>
+    <h1 id="title">사주를 봐드릴게요</h1>
+    <p class="sub" id="subtitle">생년월일시만 알려주시면 됩니다. 30초면 끝나요.</p>
+
+    <label for="name">이름 (별명도 괜찮아요)</label>
+    <input type="text" id="name" maxlength="20" autocomplete="off">
+
+    <label>생년월일</label>
+    <div class="row">
+      <input type="number" id="y" placeholder="1995" inputmode="numeric">
+      <input type="number" id="m" placeholder="3" inputmode="numeric">
+      <input type="number" id="d" placeholder="21" inputmode="numeric">
+    </div>
+    <div class="seg" style="margin-top:8px">
+      <button type="button" id="solar" aria-pressed="true">양력</button>
+      <button type="button" id="lunar" aria-pressed="false">음력</button>
+    </div>
+
+    <label>태어난 시간 <span style="color:var(--ink-dim)">— 모르면 비워두세요</span></label>
+    <div class="row">
+      <input type="number" id="hh" placeholder="시 (0~23)" inputmode="numeric">
+      <input type="number" id="mi" placeholder="분" inputmode="numeric">
+    </div>
+    <p class="hint">시간을 모르면 비워두셔도 괜찮아요. 나머지로도 충분히 봅니다.</p>
+
+    <label>성별</label>
+    <div class="seg">
+      <button type="button" id="female" aria-pressed="true">여</button>
+      <button type="button" id="male" aria-pressed="false">남</button>
+    </div>
+
+    <button id="submit">보내기</button>
+    <div class="msg" id="msg"></div>
+    <p class="hint" style="margin-top:18px">
+      입력한 내용은 초대한 분에게 전달된 뒤 서버에서 삭제됩니다.
+      7일 안에 전달되지 않으면 자동으로 지워집니다.
+      <a href="privacy.html">개인정보처리방침</a>
+    </p>
+  </section>
+
+  <!-- 완료 -->
+  <section id="done" hidden>
+    <div class="brand"><strong>인연도</strong><span>因緣圖</span></div>
+    <h1 id="doneTitle">전달했어요</h1>
+    <div class="teaser" id="teaser"></div>
+    <p>이번엔 <strong>당신을 중심으로</strong> 관계도를 만들어보세요.
+    가족, 친구, 동료를 한 명씩 더하면 사람과 사람 사이의 이야기가 열립니다.</p>
+    <a class="cta" href="https://play.google.com/store/apps/details?id=com.sdongworks.inyeondo">
+      인연도 설치하기
+    </a>
+    <p class="hint center" style="margin-top:20px">이 풀이는 재미와 참고용입니다</p>
+  </section>
+
+  <!-- 만료 -->
+  <section id="expired" hidden class="center" style="padding-top:60px">
+    <div class="brand" style="justify-content:center"><strong>인연도</strong></div>
+    <h1>링크가 만료됐어요</h1>
+    <p class="sub">이미 전달됐거나, 7일이 지나 자동으로 지워진 링크입니다.<br>
+    초대한 분에게 새 링크를 요청해주세요.</p>
+    <a class="cta" href="index.html">인연도가 뭔가요?</a>
+  </section>
+
+</div>
+
+<script>
+const FN = 'https://rbndywufszmjtcpxnkkh.supabase.co/functions/v1/invite';
+const token = new URLSearchParams(location.search).get('t');
+const $ = (id) => document.getElementById(id);
+const show = (id) => { for (const s of ['loading','form','done','expired'])
+  $(s).hidden = (s !== id); };
+
+// 토글 두 쌍 (양/음력, 여/남)
+let isLunar = false, gender = 'female';
+function pair(aId, bId, onPick) {
+  const set = (a, b, v) => { $(a).setAttribute('aria-pressed','true');
+    $(b).setAttribute('aria-pressed','false'); onPick(v); };
+  $(aId).onclick = () => set(aId, bId, false);
+  $(bId).onclick = () => set(bId, aId, true);
+}
+pair('solar','lunar', (v) => isLunar = v);
+pair('female','male', (v) => gender = v ? 'male' : 'female');
+
+async function load() {
+  if (!token) return show('expired');
+  try {
+    const r = await fetch(`${FN}?t=${encodeURIComponent(token)}&format=json`);
+    const d = await r.json();
+    if (!r.ok || !d.ok) return show('expired');
+    if (d.inviterName) {
+      $('title').textContent = `${d.inviterName}님이 사주를 봐주려고 해요`;
+      $('subtitle').textContent = '생년월일시만 알려주시면 됩니다. 30초면 끝나요.';
+    }
+    show('form');
+  } catch { show('expired'); }
+}
+
+$('submit').onclick = async () => {
+  const name = $('name').value.trim();
+  const y = +$('y').value, m = +$('m').value, d = +$('d').value;
+  if (!name)                       return ($('msg').textContent = '이름을 입력해주세요');
+  if (!(y >= 1902 && y <= 2099))   return ($('msg').textContent = '태어난 연도를 확인해주세요');
+  if (!(m >= 1 && m <= 12))        return ($('msg').textContent = '태어난 월을 확인해주세요');
+  if (!(d >= 1 && d <= 31))        return ($('msg').textContent = '태어난 일을 확인해주세요');
+  $('msg').textContent = '';
+  $('submit').disabled = true;
+  $('submit').textContent = '보내는 중…';
+  try {
+    const r = await fetch(`${FN}?t=${encodeURIComponent(token)}&action=submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name, y, m, d,
+        hh: $('hh').value, mi: $('mi').value,
+        g: gender, lunar: isLunar ? '1' : '0',
+      }),
+    });
+    const res = await r.json();
+    if (!r.ok || !res.ok) {
+      if (res.reason === 'expired') return show('expired');
+      throw new Error(res.reason || 'failed');
+    }
+    $('doneTitle').textContent = `${res.name}님, 전달했어요`;
+    $('teaser').textContent = res.teaser ??
+      '입력해주신 생년월일시로 사주를 풀어 초대한 분에게 전달했어요.';
+    show('done');
+  } catch {
+    $('msg').textContent = '전송에 실패했어요. 잠시 후 다시 시도해주세요.';
+    $('submit').disabled = false;
+    $('submit').textContent = '보내기';
+  }
+};
+
+load();
+</script>
+</body>
+</html>
