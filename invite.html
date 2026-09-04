@@ -175,8 +175,18 @@ $('submit').onclick = async () => {
       throw new Error(res.reason || 'failed');
     }
     $('doneTitle').textContent = `${res.name}님, 전달했어요`;
-    $('teaser').textContent = res.teaser ??
-      '입력해주신 생년월일시로 사주를 풀어 초대한 분에게 전달했어요.';
+    // teaser 는 [일간, 설명] 두 칸짜리 배열. 음력 입력이면 null 로 온다
+    // (서버에 음양력 테이블이 없어 일진을 못 구한다 — 변환은 앱 엔진 몫).
+    const t = $('teaser');
+    t.textContent = '';
+    if (Array.isArray(res.teaser)) {
+      const b = document.createElement('b');
+      b.textContent = `${res.name}님의 일간은 ${res.teaser[0]}`;
+      t.append('맛보기 하나 — ', document.createElement('br'), b,
+               document.createElement('br'), `${res.teaser[1]}입니다.`);
+    } else {
+      t.textContent = '입력해주신 생년월일시로 사주를 풀어 초대한 분에게 전달했어요.';
+    }
     show('done');
   } catch {
     $('msg').textContent = '전송에 실패했어요. 잠시 후 다시 시도해주세요.';
