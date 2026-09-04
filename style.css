@@ -1,0 +1,44 @@
+/* 인연도 웹 페이지 공통 스타일 — 앱 팔레트(palette.dart)와 맞춘다.
+   inyeonNavy #0B1027 / inyeonGold #F0C36A */
+:root {
+  --navy: #0B1027;
+  --surface: #141A38;
+  --gold: #F0C36A;
+  --ink: #ECEAF2;
+  --ink-dim: #9A9CB4;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--navy);
+  color: var(--ink);
+  font-family: -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  line-height: 1.8;
+  -webkit-text-size-adjust: 100%;
+}
+.wrap { max-width: 640px; margin: 0 auto; padding: 40px 20px 64px; }
+a { color: var(--gold); }
+h1 { font-size: 24px; letter-spacing: -0.4px; margin: 0 0 4px; }
+h2 { font-size: 16px; margin: 32px 0 6px; color: var(--gold); }
+p { margin: 6px 0; }
+.sub { color: var(--ink-dim); font-size: 14px; margin-bottom: 28px; }
+.brand { display: flex; align-items: baseline; gap: 8px; margin-bottom: 28px; }
+.brand strong { font-size: 20px; color: var(--gold); }
+.brand span { color: var(--ink-dim); font-size: 13px; }
+.card {
+  background: var(--surface); border-radius: 14px;
+  padding: 18px 20px; margin: 14px 0;
+}
+.card h3 { margin: 0 0 4px; font-size: 15px; }
+.card p { color: var(--ink-dim); font-size: 14px; margin: 0; }
+footer {
+  margin-top: 48px; padding-top: 20px;
+  border-top: 1px solid #262C4A;
+  color: var(--ink-dim); font-size: 13px;
+}
+footer a { margin-right: 14px; }
+.notice {
+  margin-top: 32px; padding: 14px 16px;
+  border: 1px solid #262C4A; border-radius: 12px;
+  color: var(--ink-dim); font-size: 13px;
+}
