@@ -27,6 +27,15 @@
     background:rgba(240,195,106,.16); color:var(--gold); border-color:var(--gold);
   }
   .hint { font-size:12px; color:var(--ink-dim); margin-top:6px; }
+  .chips { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+  .chips button {
+    padding:10px 0; font-size:14px; font-weight:700; letter-spacing:.5px; cursor:pointer;
+    background:var(--surface); color:var(--ink-dim);
+    border:1px solid #2A3155; border-radius:10px;
+  }
+  .chips button[aria-pressed="true"] {
+    background:rgba(240,195,106,.16); color:var(--gold); border-color:var(--gold);
+  }
   #submit {
     width:100%; margin-top:26px; padding:16px; font-size:17px; font-weight:700;
     cursor:pointer; background:var(--gold); color:#2A1F06;
@@ -55,12 +64,15 @@
   <section id="form" hidden>
     <div class="brand"><strong>인연도</strong><span>因緣圖</span></div>
     <h1 id="title">사주를 봐드릴게요</h1>
-    <p class="sub" id="subtitle">생년월일시만 알려주시면 됩니다. 30초면 끝나요.</p>
+    <p class="sub" id="subtitle">MBTI나 생년월일, 하나만 알려주셔도 돼요. 30초면 끝나요.</p>
 
     <label for="name">이름 (별명도 괜찮아요)</label>
     <input type="text" id="name" maxlength="20" autocomplete="off">
 
-    <label>생년월일</label>
+    <label>MBTI <span style="color:var(--ink-dim)">— 모르면 건너뛰세요</span></label>
+    <div class="chips" id="mbti"></div>
+
+    <label>생년월일 <span style="color:var(--ink-dim)">— 알면 사주까지 볼 수 있어요</span></label>
     <div class="row">
       <input type="number" id="y" placeholder="1995" inputmode="numeric">
       <input type="number" id="m" placeholder="3" inputmode="numeric">
@@ -135,6 +147,20 @@ function pair(aId, bId, onPick) {
 pair('solar','lunar', (v) => isLunar = v);
 pair('female','male', (v) => gender = v ? 'male' : 'female');
 
+// MBTI 16개 — 고른 걸 다시 누르면 해제
+const MBTI = ['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP',
+              'ISTJ','ISFJ','ESTJ','ESFJ','ISTP','ISFP','ESTP','ESFP'];
+let mbti = null;
+for (const code of MBTI) {
+  const b = document.createElement('button');
+  b.type = 'button'; b.textContent = code; b.setAttribute('aria-pressed','false');
+  b.onclick = () => {
+    mbti = (mbti === code) ? null : code;
+    for (const x of $('mbti').children) x.setAttribute('aria-pressed', String(x.textContent === mbti));
+  };
+  $('mbti').append(b);
+}
+
 async function load() {
   if (!token) return show('expired');
   try {
@@ -143,7 +169,7 @@ async function load() {
     if (!r.ok || !d.ok) return show('expired');
     if (d.inviterName) {
       $('title').textContent = `${d.inviterName}님이 사주를 봐주려고 해요`;
-      $('subtitle').textContent = '생년월일시만 알려주시면 됩니다. 30초면 끝나요.';
+      $('subtitle').textContent = 'MBTI나 생년월일, 하나만 알려주셔도 돼요. 30초면 끝나요.';
     }
     show('form');
   } catch { show('expired'); }
@@ -151,11 +177,15 @@ async function load() {
 
 $('submit').onclick = async () => {
   const name = $('name').value.trim();
-  const y = +$('y').value, m = +$('m').value, d = +$('d').value;
+  const yT = $('y').value.trim(), mT = $('m').value.trim(), dT = $('d').value.trim();
+  const anyBirth = yT || mT || dT, allBirth = yT && mT && dT;
+  const y = +yT, m = +mT, d = +dT;
   if (!name)                       return ($('msg').textContent = '이름을 입력해주세요');
-  if (!(y >= 1902 && y <= 2099))   return ($('msg').textContent = '태어난 연도를 확인해주세요');
-  if (!(m >= 1 && m <= 12))        return ($('msg').textContent = '태어난 월을 확인해주세요');
-  if (!(d >= 1 && d <= 31))        return ($('msg').textContent = '태어난 일을 확인해주세요');
+  if (!anyBirth && !mbti)          return ($('msg').textContent = 'MBTI나 생년월일 중 하나는 알려주세요');
+  if (anyBirth && !allBirth)       return ($('msg').textContent = '생년월일은 연·월·일을 모두 적어주세요');
+  if (allBirth && !(y >= 1902 && y <= 2099)) return ($('msg').textContent = '태어난 연도를 확인해주세요');
+  if (allBirth && !(m >= 1 && m <= 12))      return ($('msg').textContent = '태어난 월을 확인해주세요');
+  if (allBirth && !(d >= 1 && d <= 31))      return ($('msg').textContent = '태어난 일을 확인해주세요');
   $('msg').textContent = '';
   $('submit').disabled = true;
   $('submit').textContent = '보내는 중…';
@@ -164,9 +194,10 @@ $('submit').onclick = async () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name, y, m, d,
+        name, y: yT, m: mT, d: dT,
         hh: $('hh').value, mi: $('mi').value,
         g: gender, lunar: isLunar ? '1' : '0',
+        mbti: mbti ?? '',
       }),
     });
     const res = await r.json();
@@ -184,6 +215,11 @@ $('submit').onclick = async () => {
       b.textContent = `${res.name}님의 일간은 ${res.teaser[0]}`;
       t.append('맛보기 하나 — ', document.createElement('br'), b,
                document.createElement('br'), `${res.teaser[1]}입니다.`);
+    } else if (res.mbti) {
+      const b = document.createElement('b');
+      b.textContent = `${res.name}님은 ${res.mbti}`;
+      t.append(b, document.createElement('br'),
+        '초대한 분의 관계도에 MBTI로 들어갔어요. 생년월일까지 알려주면 사주로도 볼 수 있어요.');
     } else {
       t.textContent = '입력해주신 생년월일시로 사주를 풀어 초대한 분에게 전달했어요.';
     }
