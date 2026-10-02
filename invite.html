@@ -117,7 +117,7 @@
     <p class="hint" style="margin-top:18px">
       <span data-i18n="privacyNote">입력한 내용은 초대한 분에게 전달된 뒤 서버에서 삭제됩니다.
       7일 안에 전달되지 않으면 자동으로 지워집니다.</span>
-      <a href="privacy.html" data-i18n="privacy">개인정보처리방침</a>
+      <a href="privacy.html" id="privacyLink" data-i18n="privacy">개인정보처리방침</a>
     </p>
   </section>
 
@@ -227,7 +227,7 @@ const T = {
     gender: '性別', female: '女性', male: '男性',
     submit: '送信する', sending: '送信中…',
     privacyNote: '入力した内容は、招待した人に届けられたあとサーバーから削除されます。7日以内に届けられなかった場合も自動で消去されます。',
-    privacy: 'プライバシーポリシー(韓国語)',
+    privacy: 'プライバシーポリシー',
     errName: '名前を入力してください',
     errNeedOne: 'MBTIか生年月日のどちらかを教えてください',
     errBirthAll: '生年月日は年・月・日をすべて入力してください',
@@ -258,6 +258,7 @@ for (const el of document.querySelectorAll('[data-i18n]')) el.textContent = T[el
 for (const el of document.querySelectorAll('[data-i18n-html]')) el.innerHTML = T[el.dataset.i18nHtml];
 for (const el of document.querySelectorAll('[data-i18n-ph]')) el.placeholder = T[el.dataset.i18nPh];
 if (LANG !== 'ko') $('install').href += `&hl=${LANG}`;
+if (LANG === 'ja') $('privacyLink').href = 'privacy-ja.html';
 
 // ---------------------------------------------------------------- 토글
 // 양/음력, 여/남, 한국/일본. 나라 기본값은 폼 언어를 따른다 (앱의 새 인물과 같은 규칙).
