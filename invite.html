@@ -64,97 +64,215 @@
 <body>
 <div class="wrap">
 
-  <div id="loading" class="center" style="padding:60px 0;color:var(--ink-dim)">불러오는 중…</div>
+  <div id="loading" class="center" style="padding:60px 0;color:var(--ink-dim)" data-i18n="loading">불러오는 중…</div>
 
   <!-- 입력 -->
   <section id="form" hidden>
-    <div class="brand"><strong>인연도</strong><span>因緣圖</span></div>
-    <h1 id="title">사주를 봐드릴게요</h1>
-    <p class="sub" id="subtitle">MBTI만 찍어도 돼요. 생년월일까지 알려주면 사주로도 봐줄 수 있어요.</p>
+    <div class="brand"><strong data-i18n="brand">인연도</strong><span data-i18n="brandSub">因緣圖</span></div>
+    <h1 id="title" data-i18n="title">사주를 봐드릴게요</h1>
+    <p class="sub" id="subtitle" data-i18n="subtitle">MBTI만 찍어도 돼요. 생년월일까지 알려주면 사주로도 봐줄 수 있어요.</p>
 
-    <label for="name">이름 (별명도 괜찮아요)</label>
+    <label for="name" data-i18n="nameLabel">이름 (별명도 괜찮아요)</label>
     <input type="text" id="name" maxlength="20" autocomplete="off">
 
     <label>MBTI</label>
     <div class="chips" id="mbti"></div>
 
     <details id="birthMore">
-    <summary>생년월일도 알려주기 <small>사주까지 볼 수 있어요. 모르면 건너뛰세요</small></summary>
-    <label style="margin-top:4px">생년월일</label>
+    <summary><span data-i18n="birthMore">생년월일도 알려주기</span> <small data-i18n="birthMoreHint">사주까지 볼 수 있어요. 모르면 건너뛰세요</small></summary>
+    <label style="margin-top:4px" data-i18n="birthDate">생년월일</label>
     <div class="row">
       <input type="number" id="y" placeholder="1995" inputmode="numeric">
       <input type="number" id="m" placeholder="3" inputmode="numeric">
       <input type="number" id="d" placeholder="21" inputmode="numeric">
     </div>
     <div class="seg" style="margin-top:8px">
-      <button type="button" id="solar" aria-pressed="true">양력</button>
-      <button type="button" id="lunar" aria-pressed="false">음력</button>
+      <button type="button" id="solar" aria-pressed="true" data-i18n="solar">양력</button>
+      <button type="button" id="lunar" aria-pressed="false" data-i18n="lunar">음력</button>
     </div>
 
-    <label>태어난 시간 <span style="color:var(--ink-dim)">— 모르면 비워두세요</span></label>
+    <label><span data-i18n="birthTime">태어난 시간</span> <span style="color:var(--ink-dim)" data-i18n="birthTimeHint">— 모르면 비워두세요</span></label>
     <div class="row">
-      <input type="number" id="hh" placeholder="시 (0~23)" inputmode="numeric">
-      <input type="number" id="mi" placeholder="분" inputmode="numeric">
+      <input type="number" id="hh" placeholder="시 (0~23)" data-i18n-ph="hourPh" inputmode="numeric">
+      <input type="number" id="mi" placeholder="분" data-i18n-ph="minutePh" inputmode="numeric">
     </div>
-    <p class="hint">시간을 모르면 비워두셔도 괜찮아요. 나머지로도 충분히 봅니다.</p>
+    <p class="hint" data-i18n="timeHint">시간을 모르면 비워두셔도 괜찮아요. 나머지로도 충분히 봅니다.</p>
 
-    <label>성별</label>
+    <!-- 나라마다 표준시·서머타임 이력이 달라 같은 시각도 시주가 갈릴 수 있다 -->
+    <label data-i18n="region">태어난 나라</label>
     <div class="seg">
-      <button type="button" id="female" aria-pressed="true">여</button>
-      <button type="button" id="male" aria-pressed="false">남</button>
+      <button type="button" id="kr" aria-pressed="true" data-i18n="regionKr">한국</button>
+      <button type="button" id="jp" aria-pressed="false" data-i18n="regionJp">일본</button>
+    </div>
+
+    <label data-i18n="gender">성별</label>
+    <div class="seg">
+      <button type="button" id="female" aria-pressed="true" data-i18n="female">여</button>
+      <button type="button" id="male" aria-pressed="false" data-i18n="male">남</button>
     </div>
     </details>
 
-    <button id="submit">보내기</button>
+    <button id="submit" data-i18n="submit">보내기</button>
     <div class="msg" id="msg"></div>
     <p class="hint" style="margin-top:18px">
-      입력한 내용은 초대한 분에게 전달된 뒤 서버에서 삭제됩니다.
-      7일 안에 전달되지 않으면 자동으로 지워집니다.
-      <a href="privacy.html">개인정보처리방침</a>
+      <span data-i18n="privacyNote">입력한 내용은 초대한 분에게 전달된 뒤 서버에서 삭제됩니다.
+      7일 안에 전달되지 않으면 자동으로 지워집니다.</span>
+      <a href="privacy.html" data-i18n="privacy">개인정보처리방침</a>
     </p>
   </section>
 
   <!-- 완료 -->
   <section id="done" hidden>
-    <div class="brand"><strong>인연도</strong><span>因緣圖</span></div>
+    <div class="brand"><strong data-i18n="brand">인연도</strong><span data-i18n="brandSub">因緣圖</span></div>
     <h1 id="doneTitle">전달했어요</h1>
     <div class="teaser" id="teaser"></div>
-    <p>이번엔 <strong>당신을 중심으로</strong> 관계도를 만들어보세요.
+    <p data-i18n-html="doneBody">이번엔 <strong>당신을 중심으로</strong> 관계도를 만들어보세요.
     가족, 친구, 동료를 한 명씩 더하면 사람과 사람 사이의 이야기가 열립니다.</p>
-    <a class="cta" href="https://play.google.com/store/apps/details?id=com.sdongworks.inyeondo">
+    <a class="cta" id="install" href="https://play.google.com/store/apps/details?id=com.sdongworks.inyeondo" data-i18n="install">
       인연도 설치하기
     </a>
-    <p class="hint center" style="margin-top:20px">이 풀이는 재미와 참고용입니다</p>
+    <p class="hint center" style="margin-top:20px" data-i18n="disclaimer">이 풀이는 재미와 참고용입니다</p>
   </section>
 
   <!-- 만료 -->
   <section id="expired" hidden class="center" style="padding-top:60px">
-    <div class="brand" style="justify-content:center"><strong>인연도</strong></div>
-    <h1>링크가 만료됐어요</h1>
-    <p class="sub">이미 전달됐거나, 7일이 지나 자동으로 지워진 링크입니다.<br>
+    <div class="brand" style="justify-content:center"><strong data-i18n="brand">인연도</strong></div>
+    <h1 data-i18n="expiredTitle">링크가 만료됐어요</h1>
+    <p class="sub" data-i18n-html="expiredBody">이미 전달됐거나, 7일이 지나 자동으로 지워진 링크입니다.<br>
     초대한 분에게 새 링크를 요청해주세요.</p>
-    <a class="cta" href="index.html">인연도가 뭔가요?</a>
+    <a class="cta" href="index.html" data-i18n="whatIs">인연도가 뭔가요?</a>
   </section>
 
 </div>
 
 <script>
 const FN = 'https://rbndywufszmjtcpxnkkh.supabase.co/functions/v1/invite';
-const token = new URLSearchParams(location.search).get('t');
+const params = new URLSearchParams(location.search);
+const token = params.get('t');
 const $ = (id) => document.getElementById(id);
 const show = (id) => { for (const s of ['loading','form','done','expired'])
   $(s).hidden = (s !== id); };
 
-// 토글 두 쌍 (양/음력, 여/남)
-let isLunar = false, gender = 'female';
+// ---------------------------------------------------------------- 언어
+// 읽는 사람(친구)의 브라우저 언어가 한국어·일본어면 그걸, 아니면 초대한 사람의
+// 앱 언어(링크의 l=ja), 둘 다 없으면 한국어. 문구는 앱 arb 와 결을 맞춘다.
+const LANG = (() => {
+  for (const l of navigator.languages ?? [navigator.language]) {
+    const c = (l || '').slice(0, 2).toLowerCase();
+    if (c === 'ko' || c === 'ja') return c;
+  }
+  return params.get('l') === 'ja' ? 'ja' : 'ko';
+})();
+
+const T = {
+  ko: {
+    pageTitle: '인연도 — 사주 봐줄게',
+    loading: '불러오는 중…',
+    brand: '인연도',
+    brandSub: '因緣圖',
+    title: '사주를 봐드릴게요',
+    titleWho: (n) => `${n}님이 사주를 봐주려고 해요`,
+    subtitle: 'MBTI만 찍어도 돼요. 생년월일까지 알려주면 사주로도 봐줄 수 있어요.',
+    nameLabel: '이름 (별명도 괜찮아요)',
+    birthMore: '생년월일도 알려주기',
+    birthMoreHint: '사주까지 볼 수 있어요. 모르면 건너뛰세요',
+    birthDate: '생년월일',
+    solar: '양력', lunar: '음력',
+    birthTime: '태어난 시간', birthTimeHint: '— 모르면 비워두세요',
+    hourPh: '시 (0~23)', minutePh: '분',
+    timeHint: '시간을 모르면 비워두셔도 괜찮아요. 나머지로도 충분히 봅니다.',
+    region: '태어난 나라', regionKr: '한국', regionJp: '일본',
+    gender: '성별', female: '여', male: '남',
+    submit: '보내기', sending: '보내는 중…',
+    privacyNote: '입력한 내용은 초대한 분에게 전달된 뒤 서버에서 삭제됩니다. 7일 안에 전달되지 않으면 자동으로 지워집니다.',
+    privacy: '개인정보처리방침',
+    errName: '이름을 입력해주세요',
+    errNeedOne: 'MBTI나 생년월일 중 하나는 알려주세요',
+    errBirthAll: '생년월일은 연·월·일을 모두 적어주세요',
+    errYear: '태어난 연도를 확인해주세요',
+    errMonth: '태어난 월을 확인해주세요',
+    errDay: '태어난 일을 확인해주세요',
+    errSend: '전송에 실패했어요. 잠시 후 다시 시도해주세요.',
+    doneTitle: (n) => `${n}님, 전달했어요`,
+    teaserLead: '맛보기 하나 — ',
+    teaserHead: (n, g) => `${n}님의 일간은 ${g}`,
+    teaserTail: (t) => `${t}입니다.`,
+    mbtiHead: (n, m) => `${n}님은 ${m}`,
+    mbtiBody: '초대한 분의 관계도에 MBTI로 들어갔어요. 생년월일까지 알려주면 사주로도 볼 수 있어요.',
+    noTeaser: '입력해주신 생년월일시로 사주를 풀어 초대한 분에게 전달했어요.',
+    doneBody: '이번엔 <strong>당신을 중심으로</strong> 관계도를 만들어보세요. 가족, 친구, 동료를 한 명씩 더하면 사람과 사람 사이의 이야기가 열립니다.',
+    install: '인연도 설치하기',
+    disclaimer: '이 풀이는 재미와 참고용입니다',
+    expiredTitle: '링크가 만료됐어요',
+    expiredBody: '이미 전달됐거나, 7일이 지나 자동으로 지워진 링크입니다.<br>초대한 분에게 새 링크를 요청해주세요.',
+    whatIs: '인연도가 뭔가요?',
+  },
+  ja: {
+    pageTitle: 'えにし図 — 占ってあげる',
+    loading: '読み込み中…',
+    brand: 'えにし図',
+    brandSub: '縁の相関図',
+    title: 'あなたを占わせてください',
+    titleWho: (n) => `${n}さんがあなたを占ってくれるそうです`,
+    subtitle: 'MBTIを選ぶだけでもOK。生年月日も教えてくれれば、四柱推命でも見られます。',
+    nameLabel: '名前(ニックネームでもOK)',
+    birthMore: '生年月日も教える',
+    birthMoreHint: '四柱推命でも見られます。わからなければスキップしてください',
+    birthDate: '生年月日',
+    solar: '新暦', lunar: '旧暦',
+    birthTime: '生まれた時刻', birthTimeHint: '— わからなければ空欄で',
+    hourPh: '時(0〜23)', minutePh: '分',
+    timeHint: '時刻がわからなくても大丈夫です。ほかの情報で十分に見られます。',
+    region: '生まれた国', regionKr: '韓国', regionJp: '日本',
+    gender: '性別', female: '女性', male: '男性',
+    submit: '送信する', sending: '送信中…',
+    privacyNote: '入力した内容は、招待した人に届けられたあとサーバーから削除されます。7日以内に届けられなかった場合も自動で消去されます。',
+    privacy: 'プライバシーポリシー(韓国語)',
+    errName: '名前を入力してください',
+    errNeedOne: 'MBTIか生年月日のどちらかを教えてください',
+    errBirthAll: '生年月日は年・月・日をすべて入力してください',
+    errYear: '生まれた年を確認してください',
+    errMonth: '生まれた月を確認してください',
+    errDay: '生まれた日を確認してください',
+    errSend: '送信できませんでした。しばらくしてからもう一度お試しください。',
+    doneTitle: (n) => `${n}さん、届けました`,
+    teaserLead: 'ちょっとだけおすそわけ — ',
+    teaserHead: (n, g) => `${n}さんの日干は${g}`,
+    teaserTail: (t) => `${t}です。`,
+    mbtiHead: (n, m) => `${n}さんは${m}`,
+    mbtiBody: '招待した人の関係図にMBTIで加わりました。生年月日も教えてくれれば、四柱推命でも見られます。',
+    noTeaser: '入力していただいた生年月日と時刻で命式を出し、招待した人に届けました。',
+    doneBody: '今度は<strong>あなたを中心に</strong>関係図をつくってみませんか。家族、友だち、同僚をひとりずつ加えていくと、人と人のあいだの物語が見えてきます。',
+    install: 'えにし図をインストール',
+    disclaimer: 'この内容は楽しみと参考のためのものです',
+    expiredTitle: 'リンクの有効期限が切れています',
+    expiredBody: 'すでに届けられたか、7日が過ぎて自動で消去されたリンクです。<br>招待した人に新しいリンクをお願いしてください。',
+    whatIs: 'えにし図とは?',
+  },
+}[LANG];
+
+document.documentElement.lang = LANG;
+document.title = T.pageTitle;
+for (const el of document.querySelectorAll('[data-i18n]')) el.textContent = T[el.dataset.i18n];
+// 고정 문구만 innerHTML 로 (사용자 입력은 절대 여기로 들어가지 않는다)
+for (const el of document.querySelectorAll('[data-i18n-html]')) el.innerHTML = T[el.dataset.i18nHtml];
+for (const el of document.querySelectorAll('[data-i18n-ph]')) el.placeholder = T[el.dataset.i18nPh];
+if (LANG !== 'ko') $('install').href += `&hl=${LANG}`;
+
+// ---------------------------------------------------------------- 토글
+// 양/음력, 여/남, 한국/일본. 나라 기본값은 폼 언어를 따른다 (앱의 새 인물과 같은 규칙).
+let isLunar = false, gender = 'female', region = LANG === 'ja' ? 'jp' : 'kr';
 function pair(aId, bId, onPick) {
   const set = (a, b, v) => { $(a).setAttribute('aria-pressed','true');
     $(b).setAttribute('aria-pressed','false'); onPick(v); };
   $(aId).onclick = () => set(aId, bId, false);
   $(bId).onclick = () => set(bId, aId, true);
+  return set;
 }
 pair('solar','lunar', (v) => isLunar = v);
 pair('female','male', (v) => gender = v ? 'male' : 'female');
+const setRegion = pair('kr','jp', (v) => region = v ? 'jp' : 'kr');
+if (region === 'jp') setRegion('jp', 'kr', true);
 
 // MBTI 16개 — 고른 걸 다시 누르면 해제
 const MBTI = ['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP',
@@ -176,10 +294,7 @@ async function load() {
     const r = await fetch(`${FN}?t=${encodeURIComponent(token)}&format=json`);
     const d = await r.json();
     if (!r.ok || !d.ok) return show('expired');
-    if (d.inviterName) {
-      $('title').textContent = `${d.inviterName}님이 사주를 봐주려고 해요`;
-      $('subtitle').textContent = 'MBTI만 찍어도 돼요. 생년월일까지 알려주면 사주로도 봐줄 수 있어요.';
-    }
+    if (d.inviterName) $('title').textContent = T.titleWho(d.inviterName);
     show('form');
   } catch { show('expired'); }
 }
@@ -189,15 +304,15 @@ $('submit').onclick = async () => {
   const yT = $('y').value.trim(), mT = $('m').value.trim(), dT = $('d').value.trim();
   const anyBirth = yT || mT || dT, allBirth = yT && mT && dT;
   const y = +yT, m = +mT, d = +dT;
-  if (!name)                       return ($('msg').textContent = '이름을 입력해주세요');
-  if (!anyBirth && !mbti)          return ($('msg').textContent = 'MBTI나 생년월일 중 하나는 알려주세요');
-  if (anyBirth && !allBirth)       { $('birthMore').open = true; return ($('msg').textContent = '생년월일은 연·월·일을 모두 적어주세요'); }
-  if (allBirth && !(y >= 1902 && y <= 2099)) return ($('msg').textContent = '태어난 연도를 확인해주세요');
-  if (allBirth && !(m >= 1 && m <= 12))      return ($('msg').textContent = '태어난 월을 확인해주세요');
-  if (allBirth && !(d >= 1 && d <= 31))      return ($('msg').textContent = '태어난 일을 확인해주세요');
+  if (!name)                       return ($('msg').textContent = T.errName);
+  if (!anyBirth && !mbti)          return ($('msg').textContent = T.errNeedOne);
+  if (anyBirth && !allBirth)       { $('birthMore').open = true; return ($('msg').textContent = T.errBirthAll); }
+  if (allBirth && !(y >= 1902 && y <= 2099)) return ($('msg').textContent = T.errYear);
+  if (allBirth && !(m >= 1 && m <= 12))      return ($('msg').textContent = T.errMonth);
+  if (allBirth && !(d >= 1 && d <= 31))      return ($('msg').textContent = T.errDay);
   $('msg').textContent = '';
   $('submit').disabled = true;
-  $('submit').textContent = '보내는 중…';
+  $('submit').textContent = T.sending;
   try {
     const r = await fetch(`${FN}?t=${encodeURIComponent(token)}&action=submit`, {
       method: 'POST',
@@ -206,6 +321,7 @@ $('submit').onclick = async () => {
         name, y: yT, m: mT, d: dT,
         hh: $('hh').value, mi: $('mi').value,
         g: gender, lunar: isLunar ? '1' : '0',
+        region, lang: LANG,
         mbti: mbti ?? '',
       }),
     });
@@ -214,29 +330,28 @@ $('submit').onclick = async () => {
       if (res.reason === 'expired') return show('expired');
       throw new Error(res.reason || 'failed');
     }
-    $('doneTitle').textContent = `${res.name}님, 전달했어요`;
-    // teaser 는 [일간, 설명] 두 칸짜리 배열. 음력 입력이면 null 로 온다
+    $('doneTitle').textContent = T.doneTitle(res.name);
+    // teaser 는 [일간, 설명] 두 칸짜리 배열(lang 에 맞춘 언어). 음력 입력이면 null 로 온다
     // (서버에 음양력 테이블이 없어 일진을 못 구한다 — 변환은 앱 엔진 몫).
     const t = $('teaser');
     t.textContent = '';
     if (Array.isArray(res.teaser)) {
       const b = document.createElement('b');
-      b.textContent = `${res.name}님의 일간은 ${res.teaser[0]}`;
-      t.append('맛보기 하나 — ', document.createElement('br'), b,
-               document.createElement('br'), `${res.teaser[1]}입니다.`);
+      b.textContent = T.teaserHead(res.name, res.teaser[0]);
+      t.append(T.teaserLead, document.createElement('br'), b,
+               document.createElement('br'), T.teaserTail(res.teaser[1]));
     } else if (res.mbti) {
       const b = document.createElement('b');
-      b.textContent = `${res.name}님은 ${res.mbti}`;
-      t.append(b, document.createElement('br'),
-        '초대한 분의 관계도에 MBTI로 들어갔어요. 생년월일까지 알려주면 사주로도 볼 수 있어요.');
+      b.textContent = T.mbtiHead(res.name, res.mbti);
+      t.append(b, document.createElement('br'), T.mbtiBody);
     } else {
-      t.textContent = '입력해주신 생년월일시로 사주를 풀어 초대한 분에게 전달했어요.';
+      t.textContent = T.noTeaser;
     }
     show('done');
   } catch {
-    $('msg').textContent = '전송에 실패했어요. 잠시 후 다시 시도해주세요.';
+    $('msg').textContent = T.errSend;
     $('submit').disabled = false;
-    $('submit').textContent = '보내기';
+    $('submit').textContent = T.submit;
   }
 };
 
